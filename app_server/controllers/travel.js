@@ -16,25 +16,62 @@ const options = {
 }
 
 const travel = async function (req, res, next) {
+    const searchQuery = req.query.search || '';
+    const category = req.query.category || 'all';
+    
     await fetch(tripsEndpoint, options)
         .then(res => res.json())
         .then(json => {
-
             let message = null;
+            let trips = json;
+            let allTrips = json;
 
             if (!(json instanceof Array)) {
                 message = json;
-                json = [];
+                trips = [];
+                allTrips = [];
             } else {
                 if (!json.length) {
                     message = "No trips exist in our database!";
+                } else {
+                    if (category !== 'all') {
+                        trips = json.filter(trip => trip.category === category);
+                    }
+
+                    if (searchQuery) {
+                        const lowerSearch = searchQuery.toLowerCase();
+                        trips = trips.filter(trip => {
+                            return trip.name.toLowerCase().includes(lowerSearch) ||
+                                   trip.resort.toLowerCase().includes(lowerSearch) ||
+                                   trip.description.toLowerCase().includes(lowerSearch) ||
+                                   trip.code.toLowerCase().includes(lowerSearch);
+                        });
+                        
+                        if (trips.length === 0) {
+                            message = `No trips found matching "${searchQuery}"`;
+                        } else {
+                            message = `Found ${trips.length} trip(s) matching "${searchQuery}"`;
+                        }
+                    }
                 }
             }
 
-            res.render('travel', { title: 'Travlr Getaways', trips: json, message });
-        })
+            const beachCount = allTrips.filter(t => t.category === 'beach').length;
+            const cruiseCount = allTrips.filter(t => t.category === 'cruise').length;
+            const mountainCount = allTrips.filter(t => t.category === 'mountain').length;
 
-        .catch(err => res.status(500).send(e.message));
+            res.render('travel', { 
+                title: 'Travlr Getaways', 
+                trips: trips, 
+                message: message,
+                searchQuery: searchQuery,
+                category: category,
+                beachCount: beachCount,
+                cruiseCount: cruiseCount,
+                mountainCount: mountainCount
+            });
+        })
+        .catch(err => res.status(500).send(err.message));
 };
 
 module.exports = {

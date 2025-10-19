@@ -45,6 +45,7 @@ export class EditTripComponent implements OnInit {
       perPerson: ['', Validators.required],
       image: ['', Validators.required],
       description: ['', Validators.required],
+      category: ['', Validators.required]
     });
 
     this.tripDataService.getTrip(tripCode).subscribe({

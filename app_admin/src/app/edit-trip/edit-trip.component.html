@@ -38,6 +38,19 @@
                 <div *ngIf="f['perPerson'].errors?.['required']"> Per Person is required </div>
             </div>
         </div>
+        <div class="form-group">
+            <label>Category:</label>
+            <select formControlName="category" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['category'].errors }">
+                <option value="beach">Beach</option>
+                <option value="cruise">Cruise</option>
+                <option value="mountain">Mountain</option>
+                <option value="other">Other</option>
+            </select>
+            <div *ngIf="submitted && f['category'].errors">
+                <div *ngIf="f['category'].errors?.['required']">Category is required</div>
+            </div>
+        </div>
         <div class="form-group"> <label>Image Name:</label> <input type="text" formControlName="image"
                 placeholder="Image" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['image'].errors }">
             <div *ngIf="submitted && f['image'].errors">

@@ -32,7 +32,8 @@ export class AddTripComponent implements OnInit {
       resort: ['', Validators.required],
       perPerson: ['', Validators.required],
       image: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      category: ['beach', Validators.required]
     });
   }
 

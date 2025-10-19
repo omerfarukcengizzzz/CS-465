@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Trip } from '../models/trip';
 import { User } from '../models/user';
 import { AuthResponse } from '../models/user';
+import { UserAdmin } from '../models/user-admin';
+import { Booking } from '../models/booking';
 import { BROWSER_STORAGE } from '../storage';
 
 @Injectable({
@@ -76,5 +78,37 @@ export class TripDataService {
       password: passwd
     };
     return this.http.post<AuthResponse>(this.baseUrl + '/' + endpoint, formData);
+  }
+
+  getUsers(): Observable<UserAdmin[]> {
+    return this.http.get<UserAdmin[]>(`${this.baseUrl}/users`, { headers: this.getHeaders() });
+  }
+
+  getUser(userId: string): Observable<UserAdmin> {
+    return this.http.get<UserAdmin>(`${this.baseUrl}/users/${userId}`, { headers: this.getHeaders() });
+  }
+
+  deleteUser(userId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/users/${userId}`, { headers: this.getHeaders() });
+  }
+
+  getBookings(): Observable<Booking[]> {
+    const url = `${this.baseUrl}/bookings`;
+    return this.http.get<Booking[]>(url, { headers: this.getHeaders() });
+  }
+
+  getBooking(bookingId: string): Observable<Booking> {
+    const url = `${this.baseUrl}/bookings/${bookingId}`;
+    return this.http.get<Booking>(url, { headers: this.getHeaders() });
+  }
+
+  updateBookingStatus(bookingId: string, status: string): Observable<Booking> {
+    const url = `${this.baseUrl}/bookings/${bookingId}/status`;
+    return this.http.patch<Booking>(url, { status }, { headers: this.getHeaders() });
+  }
+
+  deleteBooking(bookingId: string): Observable<any> {
+    const url = `${this.baseUrl}/bookings/${bookingId}`;
+    return this.http.delete(url, { headers: this.getHeaders() });
   }
 }

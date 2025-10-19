@@ -9,7 +9,13 @@ tripSchema = new mongoose.Schema({
     resort: { type: String, required: true },
     perPerson: { type: String, required: true },
     image: { type: String, required: true },
-    description: { type: String, required: true }
+    description: { type: String, required: true },
+    category: { 
+        type: String, 
+        required: true,
+        enum: ['beach', 'cruise', 'mountain', 'other'],
+        default: 'other'
+    }
 });
 
 const Trip = mongoose.model('trips', tripSchema);
