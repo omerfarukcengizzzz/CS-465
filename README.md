@@ -156,5 +156,4 @@ travlr/
 - Manage trips, users, and bookings
 
 ### Author
-Omer Cengiz
-SNHU CS-465 Full Stack Development
+Omer Cengiz | SNHU | CS-465 Full Stack Development
